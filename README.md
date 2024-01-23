@@ -1,6 +1,6 @@
 # Fract_ol
 Discover how to program in 2D and explore the mesmerizing world of fractals through this project utilizing the 42 MinilibX library. This project consists of creating a small fractal exploration program, through the Julia set and the Mandelbrot set.  
-## ## Fractals
+## Fractals
 
 A fractal is a never-ending pattern. Fractals are infinitely complex patterns that are self-similar across different scales. They are created by repeating a simple process over and over in an ongoing feedback loop. Driven by recursion, fractals are images of dynamic systems – the pictures of Chaos. Mathematical fractals, like the Mandelbrot Set, are formed by calculating a simple equation thousands of times. These fractals are infinitely complex,  meaning we can zoom in forever. A fractal is made by repeating a simple process again and again.
 
