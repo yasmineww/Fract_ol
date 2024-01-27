@@ -12,6 +12,16 @@ Anytime the value of the orbit goes beyond an absolute value of two, it is guara
 
 The connection between the Julia set and the Mandelbrot set comes when you choose a specific initial value for Z in the Julia set iteration. If you pick the initial value Z to be 0, and then iterate over different C values, the resulting Julia sets will exhibit a relationship to the Mandelbrot set. in summary, if you use different initial values for Z when generating Julia sets, combining them won't necessarily give you the Mandelbrot set. The Mandelbrot set is more directly related to the Julia sets when the initial value of Z is fixed at 0.
 
+## Working with complex numbers
+
+We need to create a struct composing of two parameters; the first being the axe x (of real numbers) and the y axial (of the imaginary numbers). Our struct is going to look like this :
+
+'''typedef complex
+{
+		double x;
+		double y;
+} n_complex;'''
+
 ## MiniLibX
 
 A small library which implements some basic functions that allow you to quickly open a window and to draw within it. `mlx.h` should be included for a correct use of the MiniLibX API. It only contains function prototypes, no structs are needed.
