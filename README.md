@@ -16,11 +16,11 @@ The connection between the Julia set and the Mandelbrot set comes when you choos
 
 We need to create a struct composing of two parameters; the first being the axe x (of real numbers) and the y axial (of the imaginary numbers). Our struct is going to look like this :
 
-'''typedef complex
+```typedef complex
 {
 		double x;
 		double y;
-} n_complex;'''
+} n_complex;```
 
 ## MiniLibX
 
