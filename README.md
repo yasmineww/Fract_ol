@@ -20,7 +20,8 @@ We need to create a struct composing of two parameters; the first being the axe 
 {
 		double x;
 		double y;
-} n_complex;```
+} n_complex;
+```
 
 ## MiniLibX
 
