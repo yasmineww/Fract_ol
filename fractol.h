@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 17:00:04 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/02/01 17:46:10 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/02/01 18:51:59 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct hooks
 
 void	initialize_mlx(gen_mlx *ptr, t_data *img);
 void	my_mandelbrot(t_data *img, gen_mlx *ptr);
-n_complex	*mapping_px(n_complex *comp, int x, int y);
+n_complex	mapping_px(n_complex *comp, int x, int y);
 void	my_math(n_complex *comp, t_data *img, int x, int y);
 void	color_pixel(t_data *img, int x, int y, int i);
 void	my_pixel_put(t_data *img, int x, int y, int color);
