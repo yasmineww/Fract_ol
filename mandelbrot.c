@@ -6,32 +6,18 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 18:28:11 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/02/01 02:14:58 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:48:20 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	my_mandelbrot(int x, int y)
+void	my_pixel_put(t_data *img, int x, int y, int color) //protect x and y
 {
-	int	x;
-	int	y;
-	n_complex	*comp;
-	
-	y = 0;
-	// comp->x = -2.0;
-	// comp->y= -2.0;
-	while(y < HEIGHT)
-	{
-		x = 0;
-		while (x < WIDTH)
-		{
-			comp = mapping_px(comp, x, y);
-			my_math(comp, x, y);
-			x++;
-		}
-		y++;
-	}
+	char	*dst;
+
+	dst = img->addr + (y * img->line_length + x * (img->bpp / 8));
+	*(unsigned int*)dst = color;
 }
 
 void	color_pixel(t_data *img, int x, int y, int i)
@@ -47,11 +33,10 @@ void	color_pixel(t_data *img, int x, int y, int i)
     my_pixel_put(img, x, y, color); 
 }
 
-void	my_math(n_complex *comp, int x, int y)
+void	my_math(n_complex *comp, t_data *img, int x, int y)
 {
 	n_complex	z;
 	n_complex	c;
-	t_data		*img;
 	double		temp_z;
 	int			i;
 
@@ -76,48 +61,78 @@ void	my_math(n_complex *comp, int x, int y)
 
 n_complex	*mapping_px(n_complex *comp, int x, int y)
 {
-	comp->x = x * (new_max - new_min / WIDTH) + new_min;
-	comp->y = y * (new_max - new_min / HEIGHT) + new_min;
+	comp->x = x * (2 - (-2) / WIDTH) + -2;
+	comp->y = y * (2 - (-2) / HEIGHT) + -2;
 	return (comp);
 }
 
-void	my_pixel_put(t_data *img, int x, int y, int color) //protect x and y
+void	my_mandelbrot(t_data *img, gen_mlx *ptr)
 {
-	char	*dst;
-
-	dst = img->addr + (y * img->line_length + x * (img->bpp / 8));
-	*(unsigned int*)dst = color;
+	int			x;
+	int			y;
+	n_complex	*comp;
+	
+	y = 0;
+	while(y < HEIGHT)
+	{
+		x = 0;
+		while (x < WIDTH)
+		{
+			comp = mapping_px(comp, x, y);
+			my_math(comp, img, x, y);
+			x++;
+		}
+		y++;
+	}
+	mlx_put_image_to_window(ptr->init, ptr->win, img->img, 0, 0);
+	mlx_loop(ptr->init);	
 }
 
 void	initialize_mlx(gen_mlx *ptr, t_data *img)
 {
-	int i;
-	int iter;
-
-	i = 0;
-	iter = 100;
 	ptr->init = mlx_init();
 	//ptr->init = NULL;
 	if (!ptr->init)
 		exit(1);
-	ptr->win = mlx_new_window(ptr->init, HEIGHT, WIDTH, "Mandelbrot");
+	ptr->win = mlx_new_window(ptr->init, WIDTH, HEIGHT, "Mandelbrot");
 	if (!ptr->win)
 		exit(1);
-	img->img = mlx_new_image(ptr->init, HEIGHT, WIDTH);
+	img->img = mlx_new_image(ptr->init, WIDTH, HEIGHT);
+	puts("ok0");
 	if (!img->img)
 		exit(1);
 	img->addr = mlx_get_data_addr(img->img, &img->bpp, &img->line_length, &img->endian);
 	if (!img->addr)
 		exit(1);
-	
-	//mlx_put_image_to_window(ptr->init, ptr->win, img->img, 0, 0);
-	//mlx_loop(ptr->init);
 }
 
-int main (int ac, char **av)
+int main (void)
 {
-	gen_mlx		ptr;
-	t_data		img;
+	gen_mlx		*ptr;
+	t_data		*img;
 
-	initialize_mlx(&ptr, &img);
+	initialize_mlx(ptr, img);
+	puts("okfin");
+	my_mandelbrot(img, ptr);
+	return (0);
 }
+// int main (int ac, char **av)
+// {
+// 	gen_mlx		*ptr;
+// 	t_data		*img;
+
+// 	if (ac == 2)
+// 	{
+// 		if (av[1] == "M")
+// 		{
+// 			initialize_mlx(&ptr, &img);
+// 			my_mandelbrot(img, ptr);
+// 		}
+// 		else if (av[1] == "J")
+// 		{
+// 			initialize_mlx(&ptr, &img);
+// 			my_julia(img);
+// 		}
+// 	}
+// 	return (0);
+// }
