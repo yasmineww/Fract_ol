@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   julia.c                                            :+:      :+:    :+:   */
+/*   burning_ship.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/01 18:44:59 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/02/03 21:10:32 by ymakhlou         ###   ########.fr       */
+/*   Created: 2024/02/02 20:19:33 by ymakhlou          #+#    #+#             */
+/*   Updated: 2024/02/03 21:12:08 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	my_julia(t_data *img, gen_mlx *ptr)
+void	my_burning_ship(t_data *img, gen_mlx *ptr)
 {
 	int			x;
 	int			y;
@@ -25,7 +25,7 @@ void	my_julia(t_data *img, gen_mlx *ptr)
 		while (x < WIDTH)
 		{
 		 	comp = mapping_px(&comp, x, y);
-			my_math_julia(&comp, img, x, y);
+			my_burning_math(&comp, img, x, y);
 			x++;
 		}
 		y++;
@@ -34,24 +34,24 @@ void	my_julia(t_data *img, gen_mlx *ptr)
 	mlx_loop(ptr->init);	
 }
 
-void	my_math_julia(n_complex *comp, t_data *img, int x, int y)
+void	my_burning_math(n_complex *comp, t_data *img, int x, int y)
 {
 	n_complex	z;
 	n_complex	c;
 	double		temp_z;
 	int			i;
 
-	z.x = comp->x;
-	z.y = comp->y;
-	c.x = 0.5;
-	c.y = 1.5;
+	z.x = 0;
+	z.y = 0;
+	c.x = comp->x;
+	c.y = comp->y;
 	i = 0;
 	while (++i < MAX_ITER)
 	{
 		temp_z = (z.x * z.x) - (z.y * z.y) + c.x;
-		z.y = 2 * z.x * z.y + c.y;
+		z.y = fabs(2 * z.x * z.y) + c.y;
 		z.x = temp_z;
-		if ((z.x * z.x) + (z.y * z.y) >= 4)//pythagore
+		if ((z.x * z.x) + (z.y * z.y) >= 5)//pythagore
 			break;
 	}
 	if (i == MAX_ITER)
@@ -59,18 +59,18 @@ void	my_math_julia(n_complex *comp, t_data *img, int x, int y)
 		my_pixel_put(img, x, y, 0x000000);
 	}
 	else
-		color_pixel(img, x, y, i);
+		color_pixel_ship(img, x, y, i);
 }
 
-// void	color_pixel_julia(t_data *img, int x, int y, int i)
-// {
-// 	int R = (i * 150) % 256;
+void	color_pixel_ship(t_data *img, int x, int y, int i)
+{
+	int R = (i * 215) % 256;
         
-//     int G = (i * 80) % 256;
+    int G = (i * 0) % 256;
         
-//     int B = (i * 80) % 256;
+    int B = (i * 0) % 256;
 
-//     int color = (R << 16) | (G << 8) | B;
+    int color = (R << 16) | (G << 8) | B;
         
-//     my_pixel_put(img, x, y, color); 
-// }
+    my_pixel_put(img, x, y, color); 
+}
