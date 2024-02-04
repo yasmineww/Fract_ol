@@ -1,6 +1,6 @@
 NAME = fractol
 
-SRCS = mandelbrot.c julia.c prompt_init.c my_utils.c burning_ship.c
+SRCS = mandelbrot.c julia.c prompt_init.c my_utils.c burning_ship.c hooks.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -13,7 +13,7 @@ HEADER = fractol.h
 all: $(NAME)
 
 %.o: %.c $(HEADER)
-	$(CC) -Imlx -c $< -o $@
+	$(CC) $(FLAG) -Imlx -c $< -o $@
 
 $(NAME): $(OBJS)
 	$(CC) $(OBJS) -lmlx -framework OpenGL -framework AppKit -o $(NAME)

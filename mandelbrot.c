@@ -6,21 +6,21 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 18:28:11 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/02/03 20:06:58 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/02/04 19:34:58 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	my_pixel_put(t_data *img, int x, int y, int color) //protect x and y
+void	my_pixel_put(all_vals *ptr, int x, int y, int color) //protect x and y
 {
 	char	*dst;
 
-	dst = img->addr + (y * img->line_length + x * (img->bpp / 8));
+	dst = ptr->addr + (y * ptr->line_length + x * (ptr->bpp / 8));
 	*(unsigned int*)dst = color;
 }
 
-void	color_pixel(t_data *img, int x, int y, int i)
+void	color_pixel(all_vals *ptr, int x, int y, int i)
 {
 	int R = (i * 255) % 256;
         
@@ -30,10 +30,10 @@ void	color_pixel(t_data *img, int x, int y, int i)
 
     int color = (R << 16) | (G << 8) | B;
         
-    my_pixel_put(img, x, y, color); 
+    my_pixel_put(ptr, x, y, color); 
 }
 
-void	my_math(n_complex *comp, t_data *img, int x, int y)
+void	my_math(n_complex *comp, all_vals *ptr, int x, int y)
 {
 	n_complex	z;
 	n_complex	c;
@@ -55,49 +55,40 @@ void	my_math(n_complex *comp, t_data *img, int x, int y)
 	}
 	if (i == MAX_ITER)
 	{
-		my_pixel_put(img, x, y, 0x000000);
+		my_pixel_put(ptr, x, y, 0x000000);
 	}
 	else
-		color_pixel(img, x, y, i);
+		color_pixel(ptr, x, y, i);
 }
 
-n_complex	mapping_px(n_complex *comp, int x, int y)
+n_complex	mapping_px(n_complex *comp, int x, int y, all_vals *ptr)
 {
-	comp->x = x * (new_max - new_min) / WIDTH + new_min;
-	comp->y = y * ((new_max - new_min) / HEIGHT) + new_min;
+	comp->x = (x * (ptr->x_max - ptr->x_min) / WIDTH + ptr->x_min);
+	comp->y = (y * (ptr->y_max - ptr->y_min) / HEIGHT + ptr->y_min);
 	return (*comp);
 }
 
-void	my_mandelbrot(t_data *img, gen_mlx *ptr)
+void	my_mandelbrot(all_vals *ptr)
 {
 	int			x;
 	int			y;
 	n_complex	comp;
-	
+
 	y = 0;
 	while(y < HEIGHT)
 	{
 		x = 0;
 		while (x < WIDTH)
 		{
-		 	comp = mapping_px(&comp, x, y);
-			my_math(&comp, img, x, y);
+		 	comp = mapping_px(&comp, x, y, ptr);
+			my_math(&comp, ptr, x, y);
 			x++;
 		}
 		y++;
 	}
-	mlx_put_image_to_window(ptr->init, ptr->win, img->img, 0, 0);
-	//mlx_hook(ptr->win, 4, 0, mouse_hook, &ptr);
-	//mlx_key_hook(ptr->win, key_hook, &ptr);
-	mlx_loop(ptr->init);	
-}
-int	mouse_hook(int button,int x,int y,void *ptr)
-{
-	(void)x;
-	(void)y;
-	if (button == 4)
-	{
-		
-	}
-	return (0);
+	mlx_put_image_to_window(ptr->init, ptr->win, ptr->img, 0, 0);
+	mlx_hook(ptr->win, 04, 0, zoom, ptr);
+	mlx_hook(ptr->win, 2, 0, buttons, ptr);//for esc button
+	mlx_hook(ptr->win, 17, 0, esc, ptr);//for the red destroy button on the window
+	mlx_loop(ptr->init);
 }
