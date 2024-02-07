@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 20:19:33 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/02/04 22:00:14 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/02/06 20:16:27 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	my_burning_ship(all_vals *ptr)
 	n_complex	comp;
 
 	y = 0;
-	while(y < HEIGHT)
+	while (y < HEIGHT)
 	{
 		x = 0;
 		while (x < WIDTH)
 		{
-		 	comp = mapping_px(&comp, x, y, ptr);
+			comp = mapping_px(&comp, x, y, ptr);
 			my_burning_math(&comp, ptr, x, y);
 			x++;
 		}
@@ -54,8 +54,8 @@ void	my_burning_math(n_complex *comp, all_vals *ptr, int x, int y)
 		temp_z = (z.x * z.x) - (z.y * z.y) + c.x;
 		z.y = fabs(2 * z.x * z.y) + c.y;
 		z.x = temp_z;
-		if ((z.x * z.x) + (z.y * z.y) >= 4)//pythagore
-			break;
+		if ((z.x * z.x) + (z.y * z.y) >= 4)
+			break ;
 	}
 	if (i == MAX_ITER)
 	{
@@ -67,13 +67,11 @@ void	my_burning_math(n_complex *comp, all_vals *ptr, int x, int y)
 
 void	color_pixel_ship(all_vals *ptr, int x, int y, int i)
 {
-	int R = (i * 255) % 256;
-        
-    int G = (i * 219) % 256;
-        
-    int B = (i * 0) % 256;
+	int	color;
 
-    int color = (R << 16) | (G << 8) | B;
-        
-    my_pixel_put(ptr, x, y, color); 
+	ptr->R = (i * 255) % 256;
+	ptr->G = (i * 219) % 256;
+	ptr->B = (i * 0) % 256;
+	color = (ptr->R << 16) | (ptr->G << 8) | ptr->B;
+	my_pixel_put(ptr, x, y, color);
 }
