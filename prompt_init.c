@@ -6,18 +6,60 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 18:27:11 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/02/06 20:20:09 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/02/08 20:08:55 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	parsing()
+double	parsing(char *av)
 {
-	
+	double	res2;
+	int		res1;
+	int		k;
+	int		sign;
+
+	k = 0;
+	sign = 1;
+	res1 = 0;
+	res2 = 0;
+	while ((*av >= 9 && *av <= 13) || *av == ' ')
+		av++;
+	if (*av == '-' || *av == '+')
+	{
+		if (*av == '-')
+			sign *= -1;
+	}
+	av++;
+	while (*av != '.' && *av != '\0')
+	{
+		if (*av >= '0' && *av <= '9')
+		{
+			res1 = (res1 * 10) + (*av - '0');
+			av++;
+		}
+		else
+			exit(1);
+	}
+	if (*av == '.')
+		av++;
+	while (*av != '\0')
+	{
+		if (*av >= '0' && *av <= '9')
+		{
+			res2 = (res2 * 10) + (*av - '0');
+			av++;
+			k++;
+		}
+		else
+			exit(1);
+	}
+	res2 *= pow(10, -k);
+	res2 += res1;
+	return (res2 * sign);
 }
 
-void	initialize_vals(all_vals *ptr)
+void	initialize_vals(t_vals *ptr)
 {
 	ptr->x_min = -2;
 	ptr->x_max = 2;
@@ -27,18 +69,15 @@ void	initialize_vals(all_vals *ptr)
 	ptr->c_x = 0.285;
 	ptr->c_y = 0.01;
 	ptr->tr = 0;
-	ptr->iter = 0;
 	ptr->move_x = 0.0;
 	ptr->move_y = 0.0;
-	ptr->R = 0;
-	ptr->G = 0;
-	ptr->B = 0;
+	ptr->color = 0XFFB6CB;
+	ptr->max = 20;
 }
 
-void	initialize_mlx(all_vals *ptr)
+void	initialize_mlx(t_vals *ptr)
 {
 	ptr->init = mlx_init();
-	//ptr->init = NULL;
 	if (!ptr->init)
 		exit(1);
 	ptr->win = mlx_new_window(ptr->init, WIDTH, HEIGHT, "Mandelbrot");
@@ -50,46 +89,49 @@ void	initialize_mlx(all_vals *ptr)
 		mlx_destroy_window(ptr->init, ptr->win);
 		exit(1);
 	}
-	ptr->addr = mlx_get_data_addr(ptr->img, &ptr->bpp, &ptr->line_length, &ptr->endian);
+	ptr->addr = mlx_get_data_addr(ptr->img, &ptr->bpp, &ptr->line_length,
+			&ptr->endian);
 	if (!ptr->addr)
 		exit(1);
 	initialize_vals(ptr);
-	mlx_hook(ptr->win, 02, 0, buttons, ptr);//for esc button
+	mlx_hook(ptr->win, 02, 0, buttons, ptr);
 	mlx_hook(ptr->win, 04, 0, zoom, ptr);
-	mlx_hook(ptr->win, 17, 0, esc, ptr);//for the red destroy button on the window
+	mlx_hook(ptr->win, 17, 0, esc, ptr);
 }
 
 int main (int ac, char **av)
 {
-	all_vals	ptr;
+	t_vals	ptr;
 
 	if (HEIGHT < 0 && HEIGHT > 2000 && WIDTH < 0 && WIDTH > 2000)
 		exit (1);
+	initialize_mlx(&ptr);
 	if (ac == 2)
 	{
 		if (!ft_strcmp(av[1], "M"))
 		{
 			ptr.temp = 1;
-			initialize_mlx(&ptr);
 			my_mandelbrot(&ptr);
 		}
 		else if (!ft_strcmp(av[1], "J"))
 		{
 			ptr.temp = 2;
-			initialize_mlx(&ptr);
 			my_julia(&ptr);
 		}
 		else if (!ft_strcmp(av[1], "S"))
 		{
 			ptr.temp = 3;
-			initialize_mlx(&ptr);
 			my_burning_ship(&ptr);
 		}
 		else
-		{
-			//parsing(&av);
-			write(1, "Available fractals are Mandel, Julia and Ship. Please press m, j or s", 70);
-		}
+			write(1, "Available fractals are Mandel, Julia and Ship \n. Please press M, J or S", 70);
+	}
+	else if (ac == 4 && !ft_strcmp(av[1], "J"))
+	{
+		ptr.c_x = parsing(av[2]);
+		ptr.c_y = parsing(av[3]);
+		ptr.temp = 2;
+		my_julia(&ptr);
 	}
 	return (0);
 }

@@ -6,17 +6,17 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 18:44:59 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/02/06 20:14:11 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/02/08 11:01:58 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	my_julia(all_vals *ptr)
+void	my_julia(t_vals *ptr)
 {
 	int			x;
 	int			y;
-	n_complex	comp;
+	t_complex	comp;
 
 	y = 0;
 	while (y < HEIGHT)
@@ -38,16 +38,15 @@ void	my_julia(all_vals *ptr)
 	mlx_loop(ptr->init);
 }
 
-void	my_math_julia(n_complex *comp, all_vals *ptr, int x, int y)
+void	my_math_julia(t_complex *comp, t_vals *ptr, int x, int y)
 {
-	n_complex	z;
+	t_complex	z;
 	double		temp_z;
-	int			i;
 
-	z.x = comp->x;
-	z.y = comp->y;
-	i = 0;
-	while (++i < MAX_ITER)
+	z.x = comp->x + ptr->move_x;
+	z.y = comp->y + ptr->move_y;
+	ptr->iter = 0;
+	while (++(ptr->iter) < ptr->max)
 	{
 		temp_z = (z.x * z.x) - (z.y * z.y) + ptr->c_x;
 		z.y = 2 * z.x * z.y + ptr->c_y;
@@ -55,10 +54,10 @@ void	my_math_julia(n_complex *comp, all_vals *ptr, int x, int y)
 		if ((z.x * z.x) + (z.y * z.y) >= 4)
 			break ;
 	}
-	if (i == MAX_ITER)
+	if (ptr->iter == ptr->max)
 	{
 		my_pixel_put(ptr, x, y, 0x000000);
 	}
 	else
-		color_pixel(ptr, x, y, i);
+		my_pixel_put(ptr, x, y, ptr->color * ptr->iter);
 }
