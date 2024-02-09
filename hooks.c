@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 18:25:55 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/02/08 17:12:04 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/02/09 20:05:51 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	buttons(int keycode, t_vals *ptr)
 		ptr->move_x += (0.5 * ptr->zoom);
 	else if (keycode == 13)
 		ptr->move_y -= (0.5 * ptr->zoom);
-	// mlx_clear_window(ptr->init, ptr->win);
+	mlx_clear_window(ptr->init, ptr->win);
 	if (ptr->temp == 1)
 		my_mandelbrot(ptr);
 	else if (ptr->temp == 2)
@@ -59,12 +59,12 @@ int	zoom(int button, int x, int y, t_vals *ptr)
 			* (ptr->y_max - ptr->y_min);
 		if (button == 5)
 		{
-			ptr->max += 8;
+			ptr->max += 3;
 			zoom = 0.8;
 		}
 		else
 		{
-			ptr->max -= 8;
+			ptr->max -= 2;
 			zoom = 1.2;
 		}
 		ptr->zoom *= zoom;

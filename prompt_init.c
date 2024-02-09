@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 18:27:11 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/02/08 20:08:55 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/02/09 23:30:02 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	initialize_mlx(t_vals *ptr)
 	ptr->init = mlx_init();
 	if (!ptr->init)
 		exit(1);
-	ptr->win = mlx_new_window(ptr->init, WIDTH, HEIGHT, "Mandelbrot");
+	ptr->win = mlx_new_window(ptr->init, WIDTH, HEIGHT, "My Pink Fractol");
 	if (!ptr->win)
 		exit(1);
 	ptr->img = mlx_new_image(ptr->init, WIDTH, HEIGHT);
@@ -103,8 +103,6 @@ int main (int ac, char **av)
 {
 	t_vals	ptr;
 
-	if (HEIGHT < 0 && HEIGHT > 2000 && WIDTH < 0 && WIDTH > 2000)
-		exit (1);
 	initialize_mlx(&ptr);
 	if (ac == 2)
 	{
@@ -124,10 +122,15 @@ int main (int ac, char **av)
 			my_burning_ship(&ptr);
 		}
 		else
-			write(1, "Available fractals are Mandel, Julia and Ship \n. Please press M, J or S", 70);
+		{
+			write(1, "Please press M, J or S", 23);
+			exit(0);
+		}
 	}
-	else if (ac == 4 && !ft_strcmp(av[1], "J"))
+	else if (ac >= 2 && !ft_strcmp(av[1], "J"))
 	{
+		valid_param(av[2]);
+		valid_param(av[3]);
 		ptr.c_x = parsing(av[2]);
 		ptr.c_y = parsing(av[3]);
 		ptr.temp = 2;
