@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 18:27:11 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/02/09 23:30:02 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/02/10 16:07:09 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,19 @@
 
 double	parsing(char *av)
 {
-	double	res2;
 	int		res1;
-	int		k;
 	int		sign;
+	double	res2;
 
-	k = 0;
 	sign = 1;
 	res1 = 0;
-	res2 = 0;
 	while ((*av >= 9 && *av <= 13) || *av == ' ')
 		av++;
 	if (*av == '-' || *av == '+')
 	{
-		if (*av == '-')
+		if (*av++ == '-')
 			sign *= -1;
 	}
-	av++;
 	while (*av != '.' && *av != '\0')
 	{
 		if (*av >= '0' && *av <= '9')
@@ -41,21 +37,7 @@ double	parsing(char *av)
 		else
 			exit(1);
 	}
-	if (*av == '.')
-		av++;
-	while (*av != '\0')
-	{
-		if (*av >= '0' && *av <= '9')
-		{
-			res2 = (res2 * 10) + (*av - '0');
-			av++;
-			k++;
-		}
-		else
-			exit(1);
-	}
-	res2 *= pow(10, -k);
-	res2 += res1;
+	res2 = handle_param(av, &res1);
 	return (res2 * sign);
 }
 
@@ -99,42 +81,51 @@ void	initialize_mlx(t_vals *ptr)
 	mlx_hook(ptr->win, 17, 0, esc, ptr);
 }
 
-int main (int ac, char **av)
+void	check_args(char *av, t_vals *ptr)
+{
+	if (*av == 'M' && av[1] == '\0')
+	{
+		ptr->temp = 1;
+		my_mandelbrot(ptr);
+	}
+	else if (*av == 'J' && av[1] == '\0')
+	{
+		ptr->temp = 2;
+		my_julia(ptr);
+	}
+	else if (*av == 'S' && av[1] == '\0')
+	{
+		ptr->temp = 3;
+		my_burning_ship(ptr);
+	}
+	else
+	{
+		write(1, "Please press M, J or S", 23);
+		exit(0);
+	}
+}
+
+int	main(int ac, char **av)
 {
 	t_vals	ptr;
 
 	initialize_mlx(&ptr);
 	if (ac == 2)
+		check_args(av[1], &ptr);
+	else if (ac == 4 && av[1][0] == 'J')
 	{
-		if (!ft_strcmp(av[1], "M"))
+		if (valid_param(av[2]) && valid_param(av[3]))
 		{
-			ptr.temp = 1;
-			my_mandelbrot(&ptr);
-		}
-		else if (!ft_strcmp(av[1], "J"))
-		{
+			ptr.c_x = parsing(av[2]);
+			ptr.c_y = parsing(av[3]);
 			ptr.temp = 2;
 			my_julia(&ptr);
 		}
-		else if (!ft_strcmp(av[1], "S"))
-		{
-			ptr.temp = 3;
-			my_burning_ship(&ptr);
-		}
-		else
-		{
-			write(1, "Please press M, J or S", 23);
-			exit(0);
-		}
 	}
-	else if (ac >= 2 && !ft_strcmp(av[1], "J"))
+	else
 	{
-		valid_param(av[2]);
-		valid_param(av[3]);
-		ptr.c_x = parsing(av[2]);
-		ptr.c_y = parsing(av[3]);
-		ptr.temp = 2;
-		my_julia(&ptr);
+		write(1, "Enter a valid format", 21);
+		exit(1);
 	}
 	return (0);
 }
