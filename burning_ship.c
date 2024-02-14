@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 20:19:33 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/02/09 20:10:52 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/02/14 10:58:58 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	my_burning_ship(t_vals *ptr)
 	}
 	mlx_put_image_to_window(ptr->init, ptr->win, ptr->img, 0, 0);
 	mlx_hook(ptr->win, 04, 0, zoom, ptr);
-	mlx_hook(ptr->win, 2, 0, buttons, ptr);//for esc button
-	mlx_hook(ptr->win, 17, 0, esc, ptr);//for the red destroy button on the window
+	mlx_hook(ptr->win, 2, 0, buttons, ptr);
+	mlx_hook(ptr->win, 17, 0, esc, ptr);
 	mlx_loop(ptr->init);
 }
 
