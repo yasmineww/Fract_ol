@@ -19,7 +19,7 @@ Our algorithm consists of calculating the set for a number of iterations. If a g
 Compared to Mandelbrot set, where c is variable in the parametric plane C, Julia sets are obtained for fixed c, therefore each number c generate a different Julia. Which makes every point in the Mandelbrot set is connected to the center of the corresponding Julia set. Fascinating isn't it?
 
 <p align="center">
-<img src="https://github.com/yasmineww/Fract_ol/blob/main/Julia.png" width=50% height=50%>
+<img src="https://github.com/yasmineww/Fract_ol/blob/main/Julia.png" width=70% height=70%>
 </p>
 
 ## Why is it challenging?
@@ -37,5 +37,5 @@ Since our set exists in the complex plane, we’ll need to map the pixels so tha
 I added an extra fractal to my collection as required in the bonus section of the project. It consists of simply calculating the imaginary part in absolute value.
 
 <p align="center">
-<img src="https://github.com/yasmineww/Fract_ol/blob/main/Burning%20Ship.png" width=50% height=50%>
+<img src="https://github.com/yasmineww/Fract_ol/blob/main/Burning%20Ship.png" width=70% height=70%>
 </p>
