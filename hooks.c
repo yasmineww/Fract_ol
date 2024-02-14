@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 18:25:55 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/02/10 01:25:47 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/02/14 11:10:31 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int	move_julia(int x, int y, t_vals *ptr)
 	{
 		ptr->c_x = (double)x / WIDTH;
 		ptr->c_y = (double)y / HEIGHT;
+		mlx_clear_window(ptr->init, ptr->win);
 		my_julia(ptr);
 	}
 	return (0);
