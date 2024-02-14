@@ -6,7 +6,7 @@
 /*   By: ymakhlou <ymakhlou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 18:27:11 by ymakhlou          #+#    #+#             */
-/*   Updated: 2024/02/10 16:07:09 by ymakhlou         ###   ########.fr       */
+/*   Updated: 2024/02/14 11:33:14 by ymakhlou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ void	initialize_vals(t_vals *ptr)
 	ptr->y_min = -2;
 	ptr->y_max = 2;
 	ptr->zoom = 1.0;
-	ptr->c_x = 0.285;
-	ptr->c_y = 0.01;
+	ptr->c_x = -0.7269;
+	ptr->c_y = 0.1889;
 	ptr->tr = 0;
 	ptr->move_x = 0.0;
 	ptr->move_y = 0.0;
 	ptr->color = 0XFFB6CB;
-	ptr->max = 20;
+	ptr->max = 50;
 }
 
 void	initialize_mlx(t_vals *ptr)
@@ -109,6 +109,8 @@ int	main(int ac, char **av)
 {
 	t_vals	ptr;
 
+	if (HEIGHT <= 0 || HEIGHT > 2500 || WIDTH <= 0 || WIDTH > 2500 )
+		exit(1);
 	initialize_mlx(&ptr);
 	if (ac == 2)
 		check_args(av[1], &ptr);
